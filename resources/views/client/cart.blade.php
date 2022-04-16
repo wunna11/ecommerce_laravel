@@ -41,43 +41,44 @@
                                 </tr>
                             </thead>
 
-                            @if (session('cartItems'))
-                                @foreach (session('cartItems') as $key => $value)
-                                    <tbody>
-                                        <tr class="text-center">
-                                            <td class="product-remove"><a href="{{ route('delete.from.cart', $key) }}"><span class="ion-ios-close"></span></a>
-                                            </td>
+                            @if (Session::has('cart'))
+                                @foreach ($products as $product)
+                                <tbody>
+                                    <tr class="text-center">
+                                        <td class="product-remove"><a href="{{ route('delete.from.cart', $product['product_id']) }}"><span class="ion-ios-close"></span></a>
+                                        </td>
 
-                                            <td class="image-prod">
-                                                <div class="img"
-                                                    style="background-image:url('/storage/product_images/{{$value['image']}}');"></div>
-                                            </td>
+                                        <td class="image-prod">
+                                            <div class="img"
+                                                style="background-image:url('/storage/product_images/{{ $product['image'] }}');"></div>
+                                        </td>
 
-                                            <td class="product-name">
-                                                <h3>{{ $value['name'] }}</h3>
-                                            </td>
+                                        <td class="product-name">
+                                            <h3>{{ $product['name'] }}</h3>
+                                        </td>
 
-                                            <td class="price">$ {{ $value['price'] }}</td>
-                                            <form action="{{ route('update.from.cart', $key) }}" method="POST">
-                                                @csrf
-                                                <td class="quantity">
-                                                    <div class="input-group mb-3">
-                                                        <input type="number" name="quantity"
-                                                            class="quantity form-control input-number" value="{{ $value['quantity'] }}" min="1"
-                                                            max="100">
+                                        <td class="price">$ {{ $product['price'] }}</td>
+                                        <form action="{{ route('update.from.cart') }}" method="POST">
+                                            @csrf
+                                            <td class="quantity">
+                                                <div class="input-group mb-3">
+                                                    <input type="number" name="quantity"
+                                                        class="quantity form-control input-number" value="{{ $product['quantity'] }}" min="1"
+                                                        max="100">
+
+                                                        <input type="hidden" name="id"
+                                                        class="quantity form-control input-number" value="{{ $product['product_id'] }}" min="1"
+                                                        max="100">
                                                       
-                                                    </div>
-                                            </form>
-
-
-                                            </td>
-
-                                            <td class="total">$ {{ $value['price'] * $value['quantity'] }} </td>
-                                        </tr><!-- END TR-->
-
-
-                                    </tbody>
+                                                </div>
+                                                <input type="submit" class="btn btn-success" value="Update">
+                                        </form>
+                                    </td>
+                                    <td class="total">{{ $product['price'] * $product['quantity'] }}</td>
+                                    </tr><!-- END TR-->
+                                </tbody>
                                 @endforeach
+                                    
                             @else
                                 <td align="left" colspan="3">
                                     <p class="font-bold text-l text-black py-6 px-4">

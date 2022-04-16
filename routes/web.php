@@ -31,7 +31,7 @@ Route::get('/view-by-cat/{name}', [ClientController::class, 'viewByCat'])->name(
 // Cart
 Route::get('/cart', [CartController::class, 'cart'])->name('cart');
 Route::get('/add-to-cart/{id}', [CartController::class, 'addToCart'])->name('add.to.cart');
-Route::post('/update-from-cart/{id}', [CartController::class, 'update'])->name('update.from.cart');
+Route::post('/update-from-cart', [CartController::class, 'update'])->name('update.from.cart');
 Route::get('/delete-from-cart/{id}', [CartController::class, 'delete'])->name('delete.from.cart');
 
 Route::get('/login', [ClientController::class, 'login'])->name('login');
