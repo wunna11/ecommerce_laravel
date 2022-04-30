@@ -75,6 +75,8 @@
     <script src="{{ asset('frontend/js/google-map.js') }}"></script>
     <script src="{{ asset('frontend/js/main.js') }}"></script>
 
+    @yield('scripts')
+
 </body>
 
 </html>

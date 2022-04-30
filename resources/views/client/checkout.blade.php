@@ -22,86 +22,65 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-xl-7 ftco-animate">
-                    <form action="#" class="billing-form">
+                    <form action="{{ route('postCheckout') }}" method="POST" class="billing-form" id="checkout-form">
+                        @csrf
                         <h3 class="mb-4 billing-heading">Billing Details</h3>
+
+                        @if (Session('error'))
+                            <div class="alert alert-danger">{{ Session('error') }}</div>
+                        @endif
+
                         <div class="row align-items-end">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="firstname">Firt Name</label>
-                                    <input type="text" class="form-control" placeholder="">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="lastname">Last Name</label>
-                                    <input type="text" class="form-control" placeholder="">
+                                    <label for="firstname">Full Name</label>
+                                    <input type="text" class="form-control" placeholder="" name="name">
                                 </div>
                             </div>
                             <div class="w-100"></div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="country">State / Country</label>
-                                    <div class="select-wrap">
-                                        <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                        <select name="" id="" class="form-control">
-                                            <option value="">France</option>
-                                            <option value="">Italy</option>
-                                            <option value="">Philippines</option>
-                                            <option value="">South Korea</option>
-                                            <option value="">Hongkong</option>
-                                            <option value="">Japan</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="w-100"></div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="streetaddress">Street Address</label>
-                                    <input type="text" class="form-control" placeholder="House number and street name">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <input type="text" class="form-control"
-                                        placeholder="Appartment, suite, unit etc: (optional)">
-                                </div>
-                            </div>
-                            <div class="w-100"></div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="towncity">Town / City</label>
-                                    <input type="text" class="form-control" placeholder="">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="postcodezip">Postcode / ZIP *</label>
-                                    <input type="text" class="form-control" placeholder="">
-                                </div>
-                            </div>
-                            <div class="w-100"></div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="phone">Phone</label>
-                                    <input type="text" class="form-control" placeholder="">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="emailaddress">Email Address</label>
-                                    <input type="text" class="form-control" placeholder="">
+                                    <label for="streetaddress">Address</label>
+                                    <input type="text" class="form-control" placeholder="" name="address">
                                 </div>
                             </div>
                             <div class="w-100"></div>
                             <div class="col-md-12">
-                                <div class="form-group mt-4">
-                                    <div class="radio">
-                                        <label class="mr-3"><input type="radio" name="optradio"> Create an
-                                            Account? </label>
-                                        <label><input type="radio" name="optradio"> Ship to different address</label>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="streetaddress">Name on Card</label>
+                                    <input type="text" class="form-control" placeholder="" id="card-name" name="card_name">
                                 </div>
+                            </div>
+                            <div class="w-100"></div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="streetaddress">Number</label>
+                                    <input type="number" class="form-control" placeholder="" id="card-number"> 
+                                </div>
+                            </div>
+                            <div class="w-100"></div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="streetaddress">Expiration Month</label>
+                                    <input type="number" class="form-control" placeholder="" id="card-expiry-month">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="streetaddress">Expiration Year</label>
+                                    <input type="number" class="form-control" placeholder="" id="card-expiry-year">
+                                </div>
+                            </div>
+                            <div class="w-100"></div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="streetaddress">CVC</label>
+                                    <input type="number" class="form-control" placeholder="" id="card-cvc">
+                                </div>
+                            </div>
+
+                            <div>
+                                <input type="submit" name="" id="" class="btn btn-success" value="Buy Now">
                             </div>
                         </div>
                     </form><!-- END -->
@@ -126,7 +105,7 @@
                                 <hr>
                                 <p class="d-flex total-price">
                                     <span>Total</span>
-                                    <span>$17.60</span>
+                                    <span>$ {{ Session::get('cart')->totalPrice }}</span>
                                 </p>
                             </div>
                         </div>
@@ -192,41 +171,46 @@
             </div>
         </div>
     </section>
+@endsection
 
-    <script>
-        $(document).ready(function() {
+@section('scripts')
+<script type="text/javascript" src="/javascripts/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript" src="{{ asset('src/js/checkout.js')}}"></script>
+<script>        
+    $(document).ready(function() {
 
-            var quantitiy = 0;
-            $('.quantity-right-plus').click(function(e) {
+        var quantitiy = 0;
+        $('.quantity-right-plus').click(function(e) {
 
-                // Stop acting like a button
-                e.preventDefault();
-                // Get the field name
-                var quantity = parseInt($('#quantity').val());
+            // Stop acting like a button
+            e.preventDefault();
+            // Get the field name
+            var quantity = parseInt($('#quantity').val());
 
-                // If is not undefined
+            // If is not undefined
 
-                $('#quantity').val(quantity + 1);
+            $('#quantity').val(quantity + 1);
 
 
-                // Increment
-
-            });
-
-            $('.quantity-left-minus').click(function(e) {
-                // Stop acting like a button
-                e.preventDefault();
-                // Get the field name
-                var quantity = parseInt($('#quantity').val());
-
-                // If is not undefined
-
-                // Increment
-                if (quantity > 0) {
-                    $('#quantity').val(quantity - 1);
-                }
-            });
+            // Increment
 
         });
-    </script>
+
+        $('.quantity-left-minus').click(function(e) {
+            // Stop acting like a button
+            e.preventDefault();
+            // Get the field name
+            var quantity = parseInt($('#quantity').val());
+
+            // If is not undefined
+
+            // Increment
+            if (quantity > 0) {
+                $('#quantity').val(quantity - 1);
+            }
+        });
+
+    });
+</script>
 @endsection

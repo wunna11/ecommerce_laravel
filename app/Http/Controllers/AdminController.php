@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
+
+use function Opis\Closure\unserialize;
 
 class AdminController extends Controller
 {
@@ -13,7 +16,14 @@ class AdminController extends Controller
 
     public function orders()
     {
-        return view('admin.orders');
+        $orders = Order::get();
+
+        $orders->transform(function($order, $key) {
+            $order->cart = unserialize($order->cart);
+
+            return $order;
+        });
+        return view('admin.orders', compact('orders'));
     }
 
 }

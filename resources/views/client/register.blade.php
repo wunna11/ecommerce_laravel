@@ -5,7 +5,9 @@
 @endsection
 
 @section('content')
-    <form class="login100-form validate-form">
+    <form action="{{ route('post_register') }}" method="POST" class="login100-form validate-form">
+
+        @csrf
         <span class="login100-form-logo">
             <i class="zmdi zmdi-landscape"></i>
         </span>
@@ -14,13 +16,23 @@
             Register
         </span>
 
-        <div class="wrap-input100 validate-input" data-validate="Enter username">
-            <input class="input100" type="text" name="username" placeholder="Username">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <div class="wrap-input100 validate-input" data-validate="Enter email">
+            <input class="input100" type="text" name="email" placeholder="Email">
             <span class="focus-input100" data-placeholder="&#xf207;"></span>
         </div>
 
         <div class="wrap-input100 validate-input" data-validate="Enter password">
-            <input class="input100" type="password" name="pass" placeholder="Password">
+            <input class="input100" type="password" name="password" placeholder="Password">
             <span class="focus-input100" data-placeholder="&#xf191;"></span>
         </div>
 
@@ -32,9 +44,8 @@
         </div>
 
         <div class="container-login100-form-btn">
-            <button class="login100-form-btn">
-                Register
-            </button>
+            <input type="submit" class="login100-form-btn" value="Register">
+            </input>
         </div>
 
         <div class="text-center p-t-90">

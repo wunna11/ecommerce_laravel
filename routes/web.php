@@ -3,7 +3,9 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ClientAuthController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SliderController;
 use App\Models\Category;
@@ -25,6 +27,7 @@ use Prophecy\Call\Call;
 Route::get('/', [ClientController::class, 'index'])->name('index');
 Route::get('/shop', [ClientController::class, 'shop'])->name('shop');
 Route::get('/checkout', [ClientController::class, 'checkout'])->name('checkout');
+Route::post('/post-checkout', [ClientController::class, 'postCheckout'])->name('postCheckout');
 
 Route::get('/view-by-cat/{name}', [ClientController::class, 'viewByCat'])->name('view-by-cat');
 
@@ -34,8 +37,12 @@ Route::get('/add-to-cart/{id}', [CartController::class, 'addToCart'])->name('add
 Route::post('/update-from-cart', [CartController::class, 'update'])->name('update.from.cart');
 Route::get('/delete-from-cart/{id}', [CartController::class, 'delete'])->name('delete.from.cart');
 
-Route::get('/login', [ClientController::class, 'login'])->name('login');
-Route::get('/register', [ClientController::class, 'register'])->name('register');
+// Auth
+Route::get('/login', [ClientAuthController::class, 'login'])->name('login');
+Route::get('/register', [ClientAuthController::class, 'register'])->name('register');
+Route::post('/post-login', [ClientAuthController::class, 'post_login'])->name('post_login');
+Route::post('/post-register', [ClientAuthController::class, 'post_register'])->name('post_register');
+Route::get('/logout', [ClientAuthController::class, 'logout'])->name('logout');
 
 // Admin
 Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
@@ -68,3 +75,6 @@ Route::post('/slider/update/{id}', [SliderController::class, 'update'])->name('a
 Route::post('/slider/delete/{id}', [SliderController::class, 'delete'])->name('admin.delete.slider');
 Route::get('/slider/activate/{id}', [SliderController::class, 'activate'])->name('admin.activate.slider');
 Route::get('/slider/deactivate/{id}', [SliderController::class, 'deactivate'])->name('admin.deactivate.slider');
+
+// Pdf
+Route::get('/view-pdf/{id}', [PdfController::class, 'view_pdf'])->name('view_pdf');

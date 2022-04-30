@@ -14,6 +14,10 @@ class CartController extends Controller
 {
     public function cart()
     {
+        if (!Session::has('client')) {
+            return redirect()->route('login');
+        }
+
         if (!Session::has('cart')) {
             return view('client.cart');
         }
@@ -21,6 +25,44 @@ class CartController extends Controller
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
         return view('client.cart', ['products' => $cart->items]);
+    }
+
+    public function addToCart($id)
+    {
+        $product = Product::findOrFail($id);
+        // print_r($product);
+
+        $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        $cart = new Cart($oldCart);
+        $cart->add($product, $id);
+        Session::put('cart', $cart);
+
+        return redirect()->route('shop')->with('success', 'Product is added to cart!'); 
+    }
+
+    public function update(Request $request)
+    {
+        $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        $cart = new Cart($oldCart);
+        $cart->updateQty($request->id, $request->quantity);
+        Session::put('cart', $cart);
+        
+        return redirect()->route('cart')->with('success', 'Product quantity is updated');
+    }
+
+    public function delete($id)
+    {
+        $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        $cart = new Cart($oldCart);
+        $cart->removeItem($id);
+
+        if (count($cart->items)) {
+            Session::put('cart', $cart);
+        } else {
+            Session::forget('cart');
+        }
+
+        return redirect()->back()->with('success', 'Product is deleted from cart!');
     }
     
     // public function addToCart($id)
@@ -73,44 +115,6 @@ class CartController extends Controller
 
     //     return redirect()->back()->with('success', 'Product added to cart!');
     // }
-
-    public function addToCart($id)
-    {
-        $product = Product::findOrFail($id);
-        // print_r($product);
-
-        $oldCart = Session::has('cart') ? Session::get('cart') : null;
-        $cart = new Cart($oldCart);
-        $cart->add($product, $id);
-        Session::put('cart', $cart);
-
-        return redirect()->route('shop')->with('success', 'Product is added to cart!'); 
-    }
-
-    public function update(Request $request)
-    {
-        $oldCart = Session::has('cart') ? Session::get('cart') : null;
-        $cart = new Cart($oldCart);
-        $cart->updateQty($request->id, $request->quantity);
-        Session::put('cart', $cart);
-        
-        return redirect()->route('cart')->with('success', 'Product quantity is updated');
-    }
-
-    public function delete($id)
-    {
-        $oldCart = Session::has('cart') ? Session::get('cart') : null;
-        $cart = new Cart($oldCart);
-        $cart->removeItem($id);
-
-        if (count($cart->items)) {
-            Session::put('cart', $cart);
-        } else {
-            Session::forget('cart');
-        }
-
-        return redirect()->back()->with('success', 'Product is deleted from cart!');
-    }
 
 }
 

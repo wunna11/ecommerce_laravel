@@ -9,14 +9,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\saveProductRequest;
 use App\Http\Requests\updateProductRequest;
+use App\Mail\SendMail;
+use Illuminate\Support\Facades\Mail;
 
 class ProductController extends Controller
 {
     public function products()
     {
+        // Mail::raw('Hello World', function ($msg) {
+        //     $msg->to('wana192770@gmail.com')->subject('Product List');
+        // });
+        
         $categories = Category::all();
         $products = Product::orderBy('id', 'desc')->get();
+
+        // Mail::to('wana192770@gmail.com')->send(new SendMail($products));
         return view('admin.product.products', compact('categories', 'products'));
+
+        
     }
 
     public function add()
