@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Mail;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function products()
     {
         // Mail::raw('Hello World', function ($msg) {

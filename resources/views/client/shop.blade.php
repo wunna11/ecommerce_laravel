@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app1')
 
 @section('title')
     Shop
@@ -56,9 +56,16 @@
                                             class="add-to-cart d-flex justify-content-center align-items-center text-center">
                                             <span><i class="ion-ios-menu"></i></span>
                                         </a>
-                                        <a href="{{ route('add.to.cart', $product->id) }}" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                            <span><i class="ion-ios-cart"></i></span>
-                                        </a>
+                                        @if (Session::has('client'))
+                                            <a href="{{ route('add.to.cart', $product->id) }}" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                                <span><i class="ion-ios-cart"></i></span>
+                                            </a>
+                                        @else 
+                                            <a href="{{ route('user.login') }}" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                                <span><i class="ion-ios-cart"></i></span>
+                                            </a>
+                                        @endif
+                                        
                                         <a href="#" class="heart d-flex justify-content-center align-items-center ">
                                             <span><i class="ion-ios-heart"></i></span>
                                         </a>

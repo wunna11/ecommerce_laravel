@@ -59,7 +59,7 @@
         </div>
 
         <div class="text-center p-t-20">
-            <a class="txt1" href="{{ route('register') }}">
+            <a class="txt1" href="{{ route('user.register') }}">
                 Do you have a account?Register
             </a>
         </div>

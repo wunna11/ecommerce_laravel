@@ -1,16 +1,17 @@
 <?php
 
-use App\Http\Controllers\AdminController;
+use Prophecy\Call\Call;
+use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\SliderController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientAuthController;
-use App\Http\Controllers\ClientController;
-use App\Http\Controllers\PdfController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\SliderController;
-use App\Models\Category;
-use Illuminate\Support\Facades\Route;
-use Prophecy\Call\Call;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,11 +39,11 @@ Route::post('/update-from-cart', [CartController::class, 'update'])->name('updat
 Route::get('/delete-from-cart/{id}', [CartController::class, 'delete'])->name('delete.from.cart');
 
 // Auth
-Route::get('/login', [ClientAuthController::class, 'login'])->name('login');
-Route::get('/register', [ClientAuthController::class, 'register'])->name('register');
+Route::get('/user/login', [ClientAuthController::class, 'login'])->name('user.login');
+Route::get('/user/register', [ClientAuthController::class, 'register'])->name('user.register');
 Route::post('/post-login', [ClientAuthController::class, 'post_login'])->name('post_login');
 Route::post('/post-register', [ClientAuthController::class, 'post_register'])->name('post_register');
-Route::get('/logout', [ClientAuthController::class, 'logout'])->name('logout');
+Route::get('/logout', [ClientAuthController::class, 'logout'])->name('user.logout');
 
 // Admin
 Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
@@ -78,3 +79,8 @@ Route::get('/slider/deactivate/{id}', [SliderController::class, 'deactivate'])->
 
 // Pdf
 Route::get('/view-pdf/{id}', [PdfController::class, 'view_pdf'])->name('view_pdf');
+
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

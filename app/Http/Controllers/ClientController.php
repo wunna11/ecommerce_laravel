@@ -20,15 +20,15 @@ class ClientController extends Controller
 {
     public function index()
     {
-        $sliders = Slider::all();
-        $products = Product::orderBy('created_at', 'desc')->get();
+        $sliders = Slider::where('status', 1)->get();
+        $products = Product::orderBy('created_at', 'desc')->where('status', 1)->get();
         return view('client.index', compact('sliders', 'products'));
     }
 
     public function shop()
     {
         $categories = Category::all();
-        $products = Product::all();
+        $products = Product::where('status', 1)->get();
         return view('client.shop', compact('products', 'categories'));
     }
 

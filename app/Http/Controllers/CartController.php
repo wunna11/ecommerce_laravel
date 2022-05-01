@@ -15,7 +15,7 @@ class CartController extends Controller
     public function cart()
     {
         if (!Session::has('client')) {
-            return redirect()->route('login');
+            return redirect()->route('user.login');
         }
 
         if (!Session::has('cart')) {
